@@ -94,7 +94,7 @@ const Checkout = ({ navigation }) => {
     <View style={styles.container}>
       <Text>Enter your details:</Text>
       <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Number" value={number} onChangeText={setNumber} style={styles.input} />
+      <TextInput placeholder="Number" value={number} onChangeText={setNumber} style={styles.input} keyboardType="phone-pad"/>
       <TextInput placeholder="Address" value={address} onChangeText={setAddress} style={styles.input} />
       
       <Text>Select Pickup/Delivery Day:</Text>

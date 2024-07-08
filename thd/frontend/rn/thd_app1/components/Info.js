@@ -20,7 +20,7 @@ export default function Info({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>User Information</Text>
       <View style={styles.userInfo}>
-        <Text>Name: John Doe</Text>
+        <Text>Username: John Doe</Text>
         <Text>Email: john.doe@example.com</Text>
         <Text>Phone: *******7890</Text>
       </View>

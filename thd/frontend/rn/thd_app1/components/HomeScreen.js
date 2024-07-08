@@ -3,21 +3,30 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
+import { signIn } from '../config/apiConfig';
+
 const HomeScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = () => {
-    // Placeholder for submit logic
-    console.log('Email: ', email);
-    console.log('Password: ', password);
+  const [error, setError] = useState('');
 
-    navigation.navigate('Profile')
+  const handleSignIn = async (email, password) => {
+    try {
+      const login = await signIn(email, password);
+      console.log('API Response:', login);
+      
+      // Handle data as needed (e.g., update state with fetched items)
+
+    } catch (error) {
+      console.error('API Error:', error.message);
+      setError(error.message);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
+      <Text style={styles.title}>Sign In</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -32,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Submit" onPress={() => handleSubmit()} />
+      <Button title="Submit" onPress={() => handleSignIn} />
       <Button title="Register" onPress={() => navigation.navigate('Register')} />
     </View>
   );
