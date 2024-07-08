@@ -25,6 +25,10 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "packagerOpts": {
+      "hostType": "lan"
+    },
+    "hostUri": "172.23.156.144:19000"
   }
 }
