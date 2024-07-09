@@ -21,17 +21,18 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 async def sign_up(user):
     #add line to push username to mongo database, when created.
-    response = supabase.auth.sign_up({
+    response = supabase.auth.sign_up(credentials={
         'email': user.email,
         'password': user.password
     })
     print(response)
+    #can take username and push to other db
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])
     return {"message": "User signed up successfully", "data": response}
 
 async def sign_in(user):
-    response = supabase.auth.sign_in({
+    response = supabase.auth.sign_in_with_password({
         'email': user.email,
         'password': user.password
     })
