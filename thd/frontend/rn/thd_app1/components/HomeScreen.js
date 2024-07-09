@@ -11,7 +11,10 @@ const HomeScreen = ({ navigation }) => {
 
   const [error, setError] = useState('');
 
-  const handleSignIn = async (email, password) => {
+  const [showError, setShowError] = useState(false);
+
+
+  const handleSignIn = async () => {
     try {
       const login = await signIn(email, password);
       console.log('API Response:', login);
@@ -21,12 +24,16 @@ const HomeScreen = ({ navigation }) => {
     } catch (error) {
       console.error('API Error:', error.message);
       setError(error.message);
+      setShowError(false);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
+      {showError && (
+        <Text>Error: {error}</Text>
+      )}
       <TextInput
         style={styles.input}
         placeholder="Email"

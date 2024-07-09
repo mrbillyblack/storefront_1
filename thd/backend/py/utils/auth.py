@@ -26,6 +26,7 @@ async def sign_up(user):
         'password': user.password
     })
     print(response)
+    
     #can take username and push to other db
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])

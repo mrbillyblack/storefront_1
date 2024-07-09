@@ -1,10 +1,10 @@
 // frontend/config/apiConfig.js
 
-const API_URL = 'localhost:8000';  // Replace with your actual FastAPI backend URL
+const API_URL = 'http://192.168.1.230:8000';  // Replace with your actual FastAPI backend URL
 
 const signUp = async (email, password, username) => {
     try {
-      const response = await fetch(`${API_URL}/signup/`, {
+      const response = await fetch(`${API_URL}/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -13,6 +13,7 @@ const signUp = async (email, password, username) => {
         },
         body: JSON.stringify({ email, password }),
       });
+      console.log(JSON.stringify({ email, password }));
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -29,7 +30,7 @@ const signUp = async (email, password, username) => {
 
 const signIn = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/signup/`, {
+      const response = await fetch(`${API_URL}/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

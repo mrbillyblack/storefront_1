@@ -16,10 +16,10 @@ origins = [
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -38,7 +38,7 @@ class CartItem(BaseModel):
 class User(BaseModel):
     email: str
     password: str
-    username: Optional[str] = None
+    #username: Optional[str] = None
 
 # API endpoint to fetch inventory
 @app.get("/menu")
