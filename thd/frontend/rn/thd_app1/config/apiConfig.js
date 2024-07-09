@@ -1,6 +1,6 @@
 // frontend/config/apiConfig.js
 
-const API_URL = 'http://192.168.1.230:8000';  // Replace with your actual FastAPI backend URL
+const API_URL = 'localhost:8000';  // Replace with your actual FastAPI backend URL
 
 const signUp = async (email, password, username) => {
     try {
