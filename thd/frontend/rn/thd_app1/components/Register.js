@@ -15,10 +15,12 @@ export default function Register({ navigation }) {
   const [showError, setShowError] = useState(false);
 
 
-  const handleSignUp = async (email, password, userName) => {
+  const handleSignUp = async () => {
     try {
       const signup = await signUp(email, password, userName);
       console.log('API Response:', signup);
+      console.log('email: ', email);
+      console.log('pass: ', password);
       
       // Handle data as needed (e.g., update state with fetched items)
 
