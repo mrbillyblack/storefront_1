@@ -1,23 +1,41 @@
 // components/Shop.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getMenu } from '../config/apiConfig';
 import { Alert, View, Text, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
 
-const inventory = [
-  { id: '1', name: 'Item 1', price: 10 },
-  { id: '2', name: 'Item 2', price: 20 },
-  // Add more items as needed
-];
+// const inventory = [
+//   { id: '1', name: 'Item 1', price: 10 },
+//   { id: '2', name: 'Item 2', price: 20 },
+//   // Add more items as needed
+// ];
+
 
 const Shop = ({ navigation }) => {
   const [tempCart, setTempCart] = useState({}); 
   const [cart, setCart] = useState({});
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+        try {
+            const data = await getMenu();
+            setMenuItems(data);
+        } catch (error) {
+            // Handle errors (e.g., show error message)
+            console.error('Error fetching menu items:', error);
+        }
+    };
+
+    fetchItems();
+  }, []); // Empty dependency array ensures useEffect runs once on component mount
+
 
   const selectItem = (id, change) => {
     setTempCart((prevTempCart) => {
       const quantity = (prevTempCart[id]?.quantity || 0) + change;
       if (quantity < 0) return prevTempCart;
-      return { ...prevTempCart, [id]: { ...inventory.find(item => item.id === id), quantity } };
+      return { ...prevTempCart, [id]: { ...menuItems.find(item => item.id === id), quantity } };
     });
   };
 
@@ -55,7 +73,7 @@ const Shop = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={inventory}
+        data={menuItems}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>

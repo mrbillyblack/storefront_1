@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import mysql.connector
 import os
 
-load_dotenv()
+load_dotenv
 connection = mysql.connector.connect(
     host="172.20.0.9",
     user="root",
@@ -15,9 +15,9 @@ def fetch_menu_items():
     cursor.execute("SELECT ItemID, ItemName, Price FROM menu")
     result = cursor.fetchall()
 
-    menu = {}
+    menu = []
     for row in result:
-        menu[row] = row
+        menu.append({ 'id': str(row[0]), 'name': row[1], 'price': row[2]})
     cursor.close()
     
     return menu

@@ -56,7 +56,7 @@ const signIn = async (email, password) => {
 
 const signOut = async () => {
     try {
-      const response = await fetch(`${API_URL}/signout/`, {
+      const response = await fetch(`${API_URL}/signout`, {
         headers: {
           'Content-Type': 'application/json',
           // Optionally, include authorization headers if needed
@@ -78,8 +78,26 @@ const signOut = async () => {
     }
   };
 
+  const getMenu = async () => {
+    try {
+      const response = await fetch(`${API_URL}/menu`);
+      if (!response.ok) {
+        throw new Error('Error fetching inventory');
+      }
+      data = await response.json();
+      console.log(data);
+      return data;
+      
+
+    } catch (error) {
+      console.error('Fetch inventory error:', error);
+      throw error;
+    }
+  };
+
 export {
   API_URL,
+  getMenu,
   signUp,  
   signIn,
   signOut,
