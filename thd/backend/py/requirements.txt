@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+fastapi
 python-dotenv==1.0.1
 pydantic==2.8.2
 supabase==2.5.1
-fastapi
+uvicorn==0.30.1
+

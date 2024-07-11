@@ -4,12 +4,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 from utils.auth import sign_up, sign_in, sign_out
+from utils.database import fetch_menu_items
+
+import uvicorn
 
 import json
 
 origins = [
     "http://localhost",
-    "http://localhost:8080",
+    "http://localhost:8000",
 ]
 
 
@@ -42,8 +45,8 @@ class User(BaseModel):
 
 # API endpoint to fetch inventory
 @app.get("/menu")
-async def get_menu():
-    return menu
+def get_menu():
+    return fetch_menu_items()
 
 # API endpoint to add item to cart
 @app.post("/cart/add")
@@ -76,4 +79,7 @@ async def signin(user: User):
 @app.post("/signout")
 async def signout():
     return await sign_out()
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
