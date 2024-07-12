@@ -15,6 +15,7 @@ const Shop = ({ navigation }) => {
   const [tempCart, setTempCart] = useState({}); 
   const [cart, setCart] = useState({});
   const [menuItems, setMenuItems] = useState([]);
+  const [showCartDetails, setShowCartDetails] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -39,6 +40,7 @@ const Shop = ({ navigation }) => {
     });
   };
 
+
   //don't use this line
   //const selectedTotal = Object.values(selected).reduce((sum, item) => sum + (item.quantity * item.price), 0);
 
@@ -49,9 +51,35 @@ const Shop = ({ navigation }) => {
         const existingQuantity = prevCart[id]?.quantity || 0;
         updatedCart[id] = { ...tempCart[id], quantity: existingQuantity + tempCart[id].quantity };
       }
+      console.log(updatedCart);
       return updatedCart;
     });
     setTempCart({});
+  };
+  
+
+
+  const updateCart = (id, change) => {
+    setCart((prevCart) => {
+      // Calculate new quantity
+      const newQuantity = (prevCart[id]?.quantity || 0) + change;
+  
+      // If quantity drops to 0 or below, remove the item from the cart
+      if (newQuantity <= 0) {
+        const updatedCart = { ...prevCart };
+        delete updatedCart[id];
+        return updatedCart;
+      }
+  
+      // Otherwise, update the quantity of the item in the cart
+      return {
+        ...prevCart,
+        [id]: {
+          ...menuItems.find((item) => item.id === id),
+          quantity: newQuantity,
+        },
+      };
+    });
   };
 
   const isEmpty = (obj) => {
@@ -63,7 +91,8 @@ const Shop = ({ navigation }) => {
       Alert.alert('Add items to the cart.');
       return;
     }
-    navigation.navigate('Checkout', { cart }); 
+    navigation.navigate('Checkout', { cart, cartTotal }); 
+    setCart({});
   };
 
   const cartTotal = Object.values(cart).reduce((sum, item) => sum + (item.quantity * item.price), 0);
@@ -93,22 +122,83 @@ const Shop = ({ navigation }) => {
       />
       <View style={styles.footer}>
         <Text>Total: ${cartTotal}</Text>
+        <TouchableOpacity
+          style={styles.expandButton}
+          onPress={() => setShowCartDetails(!showCartDetails)}>
+          <Text style={styles.viewCartText}>{showCartDetails ? 'Hide Cart Details' : 'Show Cart Details'}</Text>
+        </TouchableOpacity>
+        {showCartDetails && (
+          <View style={styles.cartSummary}>
+            {Object.keys(cart).map((itemId) => (
+          <View key={itemId} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+            <Text>{menuItems.find((item) => item.id === itemId)?.name}:</Text>
+            <View style={styles.quantityContainer}>
+              <TouchableOpacity onPress={() => updateCart(itemId, -1)} style={styles.button}>
+                <Text>-</Text>
+              </TouchableOpacity>
+              <Text>{cart[itemId].quantity}</Text>
+              <TouchableOpacity onPress={() => updateCart(itemId, 1)} style={styles.button}>
+                <Text>+</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+      ))}
+          </View>
+        )}
         <Button title="Add to Cart" onPress={() => add2Cart() } />
         <Button title="Checkout" onPress={() => toCheckout()} />
       </View>
-    </View>
-    
+    </View> 
   );
 
 
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  item: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 },
-  quantityContainer: { flexDirection: 'row', alignItems: 'center' },
-  button: { marginHorizontal: 10, padding: 5, backgroundColor: '#ddd', borderRadius: 5 },
-  footer: { padding: 10, borderTopWidth: 1, borderColor: '#ddd' }
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  itemPrice:{
+    alignItems: 'center'
+  },
+  itemName: {
+    alignItems:'left'
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: { 
+    marginHorizontal: 10, 
+    padding: 5, 
+    backgroundColor: '#ddd', 
+    borderRadius: 5 },
+  footer: {
+    marginTop: 20,
+    borderTopWidth: 1,
+    paddingTop: 10,
+  },
+  cartSummary: {
+    marginTop: 10,
+  },
+  expandButton: {
+    marginTop: 10,
+    textDecorationLine: 'underline',
+    color: 'blue',
+    alignSelf: 'flex-start',
+  },
+  viewCartText:{
+    color: 'green',
+    textDecorationLine: 'underline',
+    marginBottom: 20,
+  }
 });
 
 export default Shop;

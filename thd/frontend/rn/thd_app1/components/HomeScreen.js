@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { signIn } from '../config/apiConfig';
 
@@ -25,11 +25,18 @@ const HomeScreen = ({ navigation }) => {
       console.error('API Error:', error.message);
       setError(error.message);
       setShowError(false);
-    }
+    };
+    navigation.navigate('Confirm');
+    
   };
 
   return (
     <View style={styles.container}>
+        <Image
+          source={require('../assets/applogo.jpg')} // Replace with your image path
+          style={styles.image}
+          resizeMode="contain" // Adjust resizeMode as per your image requirements
+        />
       <Text style={styles.title}>Sign In</Text>
       {showError && (
         <Text>Error: {error}</Text>
@@ -71,6 +78,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+  },
+  image: {
+    width: '35%', // Adjust width as needed
+    height: '35%', // Adjust height as needed
+    padding: 12,
+    alignSelf: 'center',
   },
 });
 

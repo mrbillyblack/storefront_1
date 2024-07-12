@@ -19,6 +19,15 @@ print('SUPABASE_KEY='+SUPABASE_KEY)
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+async def get_user(user):
+    response = supabase.auth.get_user()
+    print(response)
+    
+    #can take username and push to other db
+    if 'error' in response.json():
+        raise HTTPException(status_code=400, detail=response['error']['message'])
+    return {"message": "User retrieved successfully", "data": response}
+
 async def sign_up(user):
     #add line to push username to mongo database, when created.
     response = supabase.auth.sign_up(credentials={
@@ -46,3 +55,4 @@ async def sign_out():
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])
     return {"message": "User signed out successfully"}
+

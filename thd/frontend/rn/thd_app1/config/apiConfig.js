@@ -95,9 +95,44 @@ const signOut = async () => {
     }
   };
 
+  const placeOrder = async (data) => {
+    let pl = JSON.stringify(data)
+    console.log(pl);
+    try {
+      
+      const response = await fetch(`${API_URL}/placeOrder`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Optionally, include authorization headers if needed
+          // 'Authorization': 'Bearer your-access-token',
+        },
+        body: pl,
+      });
+
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response;
+      console.log('Created Item:', data);
+      
+      // Optionally handle success (e.g., show success message)
+    } catch (error) {
+      console.error('API Error (Sign Up):', error);
+      // Handle error
+    }
+  };
+
+  
+
+
+
 export {
   API_URL,
   getMenu,
+  placeOrder,
   signUp,  
   signIn,
   signOut,

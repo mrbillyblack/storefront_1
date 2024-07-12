@@ -9,6 +9,7 @@ import HomeScreen from '../components/HomeScreen';
 import Info from '../components/Info'
 import Register from '../components/Register';
 import Checkout from '../components/Checkout';
+import Confirm from '../components/Confirm';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -17,10 +18,11 @@ const Stack = createNativeStackNavigator();
 
 
 const AuthStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
+  <Stack.Navigator screenOptions={{ headerShown: false, headerStyle:{backgroundColor:'#212121',}, }}>
     <Stack.Screen name="Login" component={HomeScreen} />
     <Stack.Screen name="Info" component={Info} />
     <Stack.Screen name="Register" component={Register} />
+    <Stack.Screen name="Confirm" component={Confirm}/>
   </Stack.Navigator>
 );
 
@@ -45,12 +47,13 @@ const AppTabs = () => (
 
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: '#efb810',
-      tabBarInactiveTintColor: 'gray',
+      tabBarActiveTintColor: 'gray',
+      tabBarInactiveTintColor: '#212121',
       tabBarShowLabel: false,
       tabBarStyle: [
         {
-          display: "flex"
+          display: "flex",
+          backgroundColor: '#b74b28'
         },
         null
       ],      

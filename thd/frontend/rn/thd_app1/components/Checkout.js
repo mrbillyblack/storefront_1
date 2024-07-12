@@ -6,6 +6,7 @@ import { RadioButton } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { addDays, format } from 'date-fns';
+import { placeOrder } from '../config/apiConfig'
 
 const generateNextDays = (numDays) => {
   const days = [];
@@ -16,25 +17,30 @@ const generateNextDays = (numDays) => {
 };
 
 const Checkout = ({ navigation }) => {
+
+  const nextDays = generateNextDays(3);
   
   const route = useRoute();
   const navi = useNavigation();
-  const { cart = [] } = route.params || {};
+  const { cart = [], cartTotal } = route.params || {};
 
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [isPickup, setPickup] = useState('pickup')
-  const [pickupDay, setPickupDay] = useState(null)
+  const [isPickup, setPickup] = useState('delivery');
+  const [pickupDay, setPickupDay] = useState(nextDays[0]);
   const [pickupTime, setPickupTime] = useState(null);
-  const [timeSlot, setTimeSlot] = useState(null);
+  const [timeSlot, setTimeSlot] = useState('AM');
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showAmPmPicker, setShowAmPmPicker] = useState(false);
 
+  const [errorMsg, setErrorMsg] = useState('');
+  const [showError, setShowError] = useState(false);
 
-  const nextDays = generateNextDays(3);
+
+  
   const amTimes = [
     '12:00 AM', '12:30 AM', 
     '1:00 AM', '1:30 AM', 
@@ -64,20 +70,73 @@ const Checkout = ({ navigation }) => {
     '11:00 PM', '11:30 PM'];
 
   const availableTimes = timeSlot === 'AM' ? amTimes : pmTimes;
+
+  
+    
+
+  // Function to format phone number
+  const formatPhoneNumber = (value) => {
+      if (!value) return value;
+      
+      const phoneNumber = value.replace(/[^\d]/g, '');
+      const phoneNumberLength = phoneNumber.length;
+
+      if (phoneNumberLength < 4) return phoneNumber;
+      if (phoneNumberLength < 7) {
+          return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+      }
+
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  };
+
+  // Handler for input change
+  const handlePhone = (text) => {
+      const formattedPhoneNumber = formatPhoneNumber(text);
+      setPhone(formattedPhoneNumber);
+  };
   
 
-  const handleOrder = () => {
-    if (!name || !number || !address || !pickupDay || !pickupTime) {
+  const handleOrder = async () => {
+    if (!name || !phone || !address || !pickupDay || !pickupTime) {
       Alert.alert('Please fill out all fields');
       return;
     }
     
-    navi.navigate('Menu', {
-      day: pickupDay,
-      time: pickupTime,
-      mode: isPickup,
-      order: cart
-    });
+    try {
+      const scheduledTime = `${pickupDay} ${pickupTime}`;
+      let pkup = false;
+      if (isPickup == 'pickup')  {
+        pkup = true;
+      };     
+      const data = {
+        name: name,
+        phone: phone,
+        address: address,
+        pickup: pkup,
+        scheduledTime: scheduledTime,
+        cart:cart,
+        cartTotal: cartTotal
+      };
+      //console.log(data);
+      const response = await placeOrder(data);
+      console.log('API Response:', response);
+      // console.log('email: ', email);
+      // console.log('pass: ', password);
+      
+      // Handle data as needed (e.g., update state with fetched items)
+
+    } catch (error) {
+      console.error('API Error:', error.message);
+      setErrorMsg(error.message);
+      setShowError(true);
+    }
+    setErrorMsg('');
+    setShowError(false);
+    
+    
+   
+
+    navi.navigate('Menu');
 
     // PushNotification.localNotification({
     //   title: "Order Confirmation",
@@ -94,7 +153,7 @@ const Checkout = ({ navigation }) => {
     <View style={styles.container}>
       <Text>Enter your details:</Text>
       <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Number" value={number} onChangeText={setNumber} style={styles.input} keyboardType="phone-pad"/>
+      <TextInput placeholder="Number" value={phone} onChangeText={handlePhone} style={styles.input} keyboardType="phone-pad"/>
       <TextInput placeholder="Address" value={address} onChangeText={setAddress} style={styles.input} />
       
       <Text>Select Pickup/Delivery Day:</Text>
@@ -208,7 +267,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
   },
   radioContainer: {
     flexDirection: 'row',

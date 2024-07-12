@@ -1,10 +1,10 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List, Optional
-from utils.auth import sign_up, sign_in, sign_out
-from utils.database import fetch_menu_items
+from pydantic import BaseModel, RootModel
+from typing import  Dict, List, Optional
+from utils.auth import get_user, sign_up, sign_in, sign_out
+from utils.database import fetch_menu_items, place_order
 
 import uvicorn
 
@@ -43,10 +43,35 @@ class User(BaseModel):
     password: str
     #username: Optional[str] = None
 
+class OrderItem(BaseModel):
+    id: str
+    name: str
+    price: int
+    quantity: int
+
+class Cart(RootModel):
+    root: Dict[str, OrderItem]
+
+class Order(BaseModel):
+    name: str
+    phone: str
+    address: str
+    pickup: bool
+    scheduledTime: str
+    cart: Cart
+    cartTotal: float
+    
+
+
+
 # API endpoint to fetch inventory
 @app.get("/menu")
 def get_menu():
     return fetch_menu_items()
+
+@app.get("/user")
+def getUser():
+    return get_user()
 
 # API endpoint to add item to cart
 @app.post("/cart/add")
@@ -67,6 +92,9 @@ async def add_to_cart(item: CartItem):
 #     # Typically, you would save order details to a database
 #     return {"message": "Order placed successfully"}
 
+@app.post('/placeOrder')
+def placeOrder(order: Order):
+    return place_order(order)
 
 @app.post("/signup")
 async def signup(user: User):
