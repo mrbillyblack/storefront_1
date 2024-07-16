@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, RootModel
 from typing import  Dict, List, Optional
-from utils.auth import get_user, sign_up, sign_in, sign_out
+from utils.auth import get_user, sign_up, sign_in, sign_in_as_guest, sign_out
 from utils.database import fetch_menu_items, place_order
 
 import uvicorn
@@ -70,8 +70,8 @@ def get_menu():
     return fetch_menu_items()
 
 @app.get("/user")
-def getUser():
-    return get_user()
+async def getUser(username: str):
+    return get_user(username)
 
 # API endpoint to add item to cart
 @app.post("/cart/add")
@@ -104,9 +104,13 @@ async def signup(user: User):
 async def signin(user: User):
     return await sign_in(user)
 
+@app.post("/guest")
+def signin_as_guest():
+    return sign_in_as_guest()
+
 @app.post("/signout")
-async def signout():
-    return await sign_out()
+def signout():
+    return sign_out()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
