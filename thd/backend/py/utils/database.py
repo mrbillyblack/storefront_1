@@ -30,7 +30,7 @@ def place_order(order):
     # Insert a new menu item with the current date
     random_uuid = str(uuid.uuid4())
     OrderID = random_uuid[:7]
-    print(OrderID)
+    print("Order No. %s", OrderID.upper())
 
     cartObject = json.loads(order.cart.json())  # Use date.today() to get the current date
     # print(cartObject)

@@ -31,7 +31,6 @@ const Shop = ({ navigation }) => {
     fetchItems();
   }, []); // Empty dependency array ensures useEffect runs once on component mount
 
-
   const selectItem = (id, change) => {
     setTempCart((prevTempCart) => {
       const quantity = (prevTempCart[id]?.quantity || 0) + change;
@@ -39,10 +38,6 @@ const Shop = ({ navigation }) => {
       return { ...prevTempCart, [id]: { ...menuItems.find(item => item.id === id), quantity } };
     });
   };
-
-
-  //don't use this line
-  //const selectedTotal = Object.values(selected).reduce((sum, item) => sum + (item.quantity * item.price), 0);
 
   const add2Cart = () => {
     setCart((prevCart) => {
@@ -56,8 +51,6 @@ const Shop = ({ navigation }) => {
     });
     setTempCart({});
   };
-  
-
 
   const updateCart = (id, change) => {
     setCart((prevCart) => {
@@ -84,7 +77,7 @@ const Shop = ({ navigation }) => {
 
   const isEmpty = (obj) => {
     return Object.keys(obj).length === 0;
-  }
+  };
 
   const toCheckout = () => {
     if (isEmpty(cart)) {
@@ -97,8 +90,6 @@ const Shop = ({ navigation }) => {
 
   const cartTotal = Object.values(cart).reduce((sum, item) => sum + (item.quantity * item.price), 0);
 
-  
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -106,22 +97,22 @@ const Shop = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>{item.name}</Text>
-            <Text>${item.price}</Text>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemPrice}>${item.price}</Text>
             <View style={styles.quantityContainer}>
               <TouchableOpacity onPress={() => selectItem(item.id, -1)} style={styles.button}>
-                <Text>-</Text>
+                <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
-              <Text>{tempCart[item.id]?.quantity || 0}</Text>
+              <Text style={styles.quantityText}>{tempCart[item.id]?.quantity || 0}</Text>
               <TouchableOpacity onPress={() => selectItem(item.id, 1)} style={styles.button}>
-                <Text>+</Text>
+                <Text style={styles.buttonText}>+</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
       />
       <View style={styles.footer}>
-        <Text>Total: ${cartTotal}</Text>
+        <Text style={styles.totalText}>Total: ${cartTotal}</Text>
         <TouchableOpacity
           style={styles.expandButton}
           onPress={() => setShowCartDetails(!showCartDetails)}>
@@ -130,34 +121,35 @@ const Shop = ({ navigation }) => {
         {showCartDetails && (
           <View style={styles.cartSummary}>
             {Object.keys(cart).map((itemId) => (
-          <View key={itemId} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-            <Text>{menuItems.find((item) => item.id === itemId)?.name}:</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={() => updateCart(itemId, -1)} style={styles.button}>
-                <Text>-</Text>
-              </TouchableOpacity>
-              <Text>{cart[itemId].quantity}</Text>
-              <TouchableOpacity onPress={() => updateCart(itemId, 1)} style={styles.button}>
-                <Text>+</Text>
-              </TouchableOpacity>
-            </View>
-        </View>
-      ))}
+              <View key={itemId} style={styles.cartItem}>
+                <Text style={styles.cartItemName}>{menuItems.find((item) => item.id === itemId)?.name}:</Text>
+                <View style={styles.quantityContainer}>
+                  <TouchableOpacity onPress={() => updateCart(itemId, -1)} style={styles.button}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantityText}>{cart[itemId].quantity}</Text>
+                  <TouchableOpacity onPress={() => updateCart(itemId, 1)} style={styles.button}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
           </View>
         )}
-        <Button title="Add to Cart" onPress={() => add2Cart() } />
-        <Button title="Checkout" onPress={() => toCheckout()} />
+        <Button style={{padding: 12}} title="Add to Cart" onPress={add2Cart} />
+        <Button title="Checkout" onPress={toCheckout} />
       </View>
-    </View> 
+    </View>
   );
-
-
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#313338', // Dark mode background color
+    color: 'white',
+    borderBlockEndColor: '#212121',
   },
   item: {
     flexDirection: 'row',
@@ -165,11 +157,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  itemPrice:{
-    alignItems: 'center'
-  },
   itemName: {
-    alignItems:'left'
+    fontSize: 14,
+    color: 'white', // White text color
+  },
+  itemPrice: {
+    fontSize: 16,
+    color: '#ccc', // Lighter text color for price
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -177,28 +171,50 @@ const styles = StyleSheet.create({
   },
   button: { 
     marginHorizontal: 10, 
-    padding: 5, 
+    padding: 7, 
     backgroundColor: '#ddd', 
-    borderRadius: 5 },
+    borderRadius: 5 
+  },
+  buttonText: {
+    fontSize: 10,
+  },
+  quantityText: {
+    fontSize: 16,
+    color: 'white', // White text color for quantity
+    marginHorizontal: 10,
+  },
   footer: {
-    marginTop: 20,
-    borderTopWidth: 1,
+    marginTop: 10,
+    borderTopWidth: 10,
     paddingTop: 10,
+  },
+  totalText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white', // White text color for total
+    marginBottom: 10,
+  },
+  expandButton: {
+    marginTop: 10,
+  },
+  viewCartText: {
+    color: 'green',
+    textDecorationLine: 'underline',
+    marginBottom: 12,
+    font: 14,
   },
   cartSummary: {
     marginTop: 10,
   },
-  expandButton: {
-    marginTop: 10,
-    textDecorationLine: 'underline',
-    color: 'blue',
-    alignSelf: 'flex-start',
+  cartItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
   },
-  viewCartText:{
-    color: 'green',
-    textDecorationLine: 'underline',
-    marginBottom: 20,
-  }
+  cartItemName: {
+    color: 'white', // White text color for cart item names
+    fontSize: 14,
+  },
 });
 
 export default Shop;

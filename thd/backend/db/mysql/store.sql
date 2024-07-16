@@ -27,7 +27,7 @@ CREATE TABLE orders(
     `Address` varchar(100) NOT NULL,
     Pickup boolean,
     ScheduledTime varchar(200),
-    Details varchar(200), 
+    Details JSON, 
     Total int NOT NULL,
     OrderID CHAR(8),
     PRIMARY KEY (OrderNo)

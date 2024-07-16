@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { useGlobalState } from '../config/apiConfig';
 import Shop from '../components/Shop';
 import HomeScreen from '../components/HomeScreen';
 import Info from '../components/Info'
@@ -19,19 +20,20 @@ const Stack = createNativeStackNavigator();
 
 
 const AuthStack = () => {
-  const isLoggedIn = useGlobalState(isLoggedIn);
+  const isLoggedIn = useGlobalState('isLoggedIn');
   
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, headerStyle:{backgroundColor:'#212121',}, }}>
-        {isLoggedIn ? (
+    <Stack.Navigator screenOptions={{ headerShown: false}}>
+        {!isLoggedIn ? (
           <>
-          <Stack.Screen name="Login" component={HomeScreen} />
-          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Confirm" component={Confirm}/>
           </>
         ) : (
           <>
+          <Stack.Screen name="Login" component={HomeScreen} />
+          <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Confirm" component={Confirm}/>
-          <Stack.Screen name="Info" component={Info} />
+          {/* <Stack.Screen name="Info" component={Info} /> */}
           </>
         )}
     </Stack.Navigator>
@@ -39,7 +41,16 @@ const AuthStack = () => {
 };
 
 const ShopStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
+  <Stack.Navigator screenOptions={{ headerShown: false,
+    headerStyle: {
+      backgroundColor: '#313338', // Header background color
+    },
+    headerTintColor: '#fff', // Header text color
+    headerTitleStyle: {
+      color: '#fff', // Header title color
+    },
+    
+    }}>
     <Stack.Screen name="Menu" component={Shop} />
     <Stack.Screen name="Checkout" component={Checkout} />
   </Stack.Navigator>
@@ -59,21 +70,41 @@ const AppTabs = () => (
 
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: 'gray',
+      tabBarActiveTintColor: '#fff',
       tabBarInactiveTintColor: '#212121',
-      tabBarShowLabel: false,
       tabBarStyle: [
         {
           display: "flex",
-          backgroundColor: '#b74b28'
+          backgroundColor: '#b74b28',
+          tabBarLabelStyle: {
+            color: '#b74b28',
+          },
         },
         null
-      ],      
+        ],
+      // unmountOnBlur: true,
+      lazy: true,
     })}
 
   >
-    <Tab.Screen name="Profile" component={AuthStack} screenOptions={labe}/>
-    <Tab.Screen name="Shop" component={ShopStack} />
+    <Tab.Screen name="Profile" component={AuthStack} options={{
+      headerStyle: {
+        backgroundColor: '#b74b28'
+        
+      },
+      headerTitleStyle: {
+        color: '#fff',
+      },
+      }}/>
+    <Tab.Screen name="Shop" component={ShopStack} options={{
+      headerStyle: {
+        backgroundColor: '#b74b28'
+        
+      },
+      headerTitleStyle: {
+        color: '#fff',
+      },
+      }}/>
   </Tab.Navigator>
 );
 

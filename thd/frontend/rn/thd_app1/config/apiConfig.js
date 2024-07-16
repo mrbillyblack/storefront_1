@@ -59,8 +59,6 @@ const signIn = async (email, password) => {
       console.log('Created Item:', data);
 
 
-      setGlobalState('username', data.user.email);
-      setGlobalState('userID', data.user.id);
       return data;
       
       // Optionally handle success (e.g., show success message)
@@ -92,8 +90,9 @@ const signIn = async (email, password) => {
       const data = await response.json();
       console.log('Created Item:', data);
 
-      setGlobalState('username', 'Guest');
-      setGlobalState('userID', data.user.id);
+      setGlobalState('isLoggedIn', true);
+
+      
 
       return data;
       
@@ -169,6 +168,8 @@ const signOut = async () => {
 
       const data = await response;
       console.log('Created Item:', data);
+
+      return data;
       
       // Optionally handle success (e.g., show success message)
     } catch (error) {
