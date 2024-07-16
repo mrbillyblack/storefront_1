@@ -6,7 +6,7 @@ import { RadioButton } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { addDays, format } from 'date-fns';
-import { placeOrder } from '../config/apiConfig'
+import { placeOrder, useGlobalState } from '../config/apiConfig'
 
 const generateNextDays = (numDays) => {
   const days = [];
@@ -38,6 +38,8 @@ const Checkout = ({ navigation }) => {
 
   const [errorMsg, setErrorMsg] = useState('');
   const [showError, setShowError] = useState(false);
+
+  const username = useGlobalState('username');
 
 
   
@@ -107,7 +109,12 @@ const Checkout = ({ navigation }) => {
       let pkup = false;
       if (isPickup == 'pickup')  {
         pkup = true;
-      };     
+      };  
+      
+      if (username == 'Guest'){
+        setName(`${name} (Guest)`)
+      }
+      else setName(username);
       const data = {
         name: name,
         phone: phone,

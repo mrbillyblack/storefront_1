@@ -1,6 +1,15 @@
 // frontend/config/apiConfig.js
+import { createGlobalState } from 'react-hooks-global-state';
+
 
 const API_URL = 'http://192.168.1.230:8000';  // Replace with your actual FastAPI backend URL
+
+
+const {setGlobalState, useGlobalState} = createGlobalState({
+  username: 'Guest',
+  userID: '',
+  isLoggedIn: false,
+});
 
 const signUp = async (email, password, username) => {
     try {
@@ -48,6 +57,10 @@ const signIn = async (email, password) => {
 
       const data = await response.json();
       console.log('Created Item:', data);
+
+
+      setGlobalState('username', data.user.email);
+      setGlobalState('userID', data.user.id);
       return data;
       
       // Optionally handle success (e.g., show success message)
@@ -78,6 +91,10 @@ const signIn = async (email, password) => {
 
       const data = await response.json();
       console.log('Created Item:', data);
+
+      setGlobalState('username', 'Guest');
+      setGlobalState('userID', data.user.id);
+
       return data;
       
       // Optionally handle success (e.g., show success message)
@@ -168,9 +185,11 @@ export {
   API_URL,
   getMenu,
   placeOrder,
+  setGlobalState,
   signUp,  
   signIn,
   signInGuest,
   signOut,
+  useGlobalState,
 };
 

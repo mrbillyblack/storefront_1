@@ -3,7 +3,9 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import Shop from '../components/Shop';
 import HomeScreen from '../components/HomeScreen';
 import Info from '../components/Info'
@@ -16,15 +18,25 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
-
-const AuthStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false, headerStyle:{backgroundColor:'#212121',}, }}>
-    <Stack.Screen name="Login" component={HomeScreen} />
-    <Stack.Screen name="Info" component={Info} />
-    <Stack.Screen name="Register" component={Register} />
-    <Stack.Screen name="Confirm" component={Confirm}/>
-  </Stack.Navigator>
-);
+const AuthStack = () => {
+  const isLoggedIn = useGlobalState(isLoggedIn);
+  
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false, headerStyle:{backgroundColor:'#212121',}, }}>
+        {isLoggedIn ? (
+          <>
+          <Stack.Screen name="Login" component={HomeScreen} />
+          <Stack.Screen name="Register" component={Register} />
+          </>
+        ) : (
+          <>
+          <Stack.Screen name="Confirm" component={Confirm}/>
+          <Stack.Screen name="Info" component={Info} />
+          </>
+        )}
+    </Stack.Navigator>
+  );
+};
 
 const ShopStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -60,15 +72,16 @@ const AppTabs = () => (
     })}
 
   >
-    <Tab.Screen name="Profile" component={AuthStack} />
+    <Tab.Screen name="Profile" component={AuthStack} screenOptions={labe}/>
     <Tab.Screen name="Shop" component={ShopStack} />
   </Tab.Navigator>
 );
 
 export default function AppNavigator() {
+  
   return (
     <NavigationContainer>
       <AppTabs />
-    </NavigationContainer>
+    </NavigationContainer>    
   );
-}
+};
