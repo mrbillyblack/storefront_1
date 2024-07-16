@@ -19,14 +19,14 @@ print('SUPABASE_KEY='+SUPABASE_KEY)
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-async def get_user(user):
+def get_user():
     response = supabase.auth.get_user()
     print(response)
     
     #can take username and push to other db
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])
-    return {"message": "User retrieved successfully", "data": response}
+    return response
 
 async def sign_up(user):
     #add line to push username to mongo database, when created.
@@ -42,17 +42,27 @@ async def sign_up(user):
     return {"message": "User signed up successfully", "data": response}
 
 async def sign_in(user):
+    print('endpoint hit')
     response = supabase.auth.sign_in_with_password({
         'email': user.email,
         'password': user.password
     })
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])
+    print(response)
     return {"message": "User signed in successfully", "data": response}
 
-async def sign_out():
+def sign_in_as_guest():
+    print('endpoint hit')
+    response = supabase.auth.sign_in_anonymously(credentials={"options": {"data": {}}})
+    print(response)
+    if 'error' in response.json():
+        raise HTTPException(status_code=400, detail=response['error']['message'])
+    return {"message": "Guest user signed in successfully", "data": response}
+
+def sign_out():
     response = supabase.auth.sign_out()
     if 'error' in response.json():
         raise HTTPException(status_code=400, detail=response['error']['message'])
-    return {"message": "User signed out successfully"}
+    return {"message": "User signed out successfully", "data": response}
 

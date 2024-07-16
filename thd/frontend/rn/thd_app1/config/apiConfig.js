@@ -20,6 +20,7 @@ const signUp = async (email, password, username) => {
       }
       const data = await response.json();
       console.log('Created Item:', data);
+      return data;
       
       // Optionally handle success (e.g., show success message)
     } catch (error) {
@@ -29,6 +30,7 @@ const signUp = async (email, password, username) => {
   };
 
 const signIn = async (email, password) => {
+    console.log()
     try {
       const response = await fetch(`${API_URL}/signin`, {
         method: 'POST',
@@ -46,12 +48,45 @@ const signIn = async (email, password) => {
 
       const data = await response.json();
       console.log('Created Item:', data);
+      return data;
       
       // Optionally handle success (e.g., show success message)
     } catch (error) {
-      console.error('API Error (Sign Up):', error);
+      console.error('API Error (Sign In):', error);
       // Handle error
     }
+
+
+  };
+
+  const signInGuest = async () => {
+    console.log()
+    try {
+      const response = await fetch(`${API_URL}/guest`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Optionally, include authorization headers if needed
+          // 'Authorization': 'Bearer your-access-token',
+        },
+        body: JSON.stringify({}),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Created Item:', data);
+      return data;
+      
+      // Optionally handle success (e.g., show success message)
+    } catch (error) {
+      console.error('API Error (Sign In):', error);
+      // Handle error
+    }
+
+
   };
 
 const signOut = async () => {
@@ -135,6 +170,7 @@ export {
   placeOrder,
   signUp,  
   signIn,
+  signInGuest,
   signOut,
 };
 
