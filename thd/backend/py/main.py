@@ -13,6 +13,7 @@ import json
 origins = [
     "http://localhost",
     "http://localhost:8000",
+    "http://172.20.0.10:5000"
 ]
 
 
@@ -61,8 +62,6 @@ class Order(BaseModel):
     cart: Cart
     cartTotal: float
     
-
-
 
 # API endpoint to fetch inventory
 @app.get("/menu")
@@ -113,5 +112,5 @@ def signout():
     return sign_out()
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
 

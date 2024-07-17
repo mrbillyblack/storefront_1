@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Image, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TextInput, 
+  KeyboardAvoidingView, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { signIn, signInGuest, setGlobalState } from '../config/apiConfig';
 
