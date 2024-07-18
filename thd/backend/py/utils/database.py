@@ -28,9 +28,9 @@ def place_order(order):
     cursor = connection.cursor()     
 
     # Insert a new menu item with the current date
-    random_uuid = str(uuid.uuid4())
+    random_uuid = str(uuid.uuid4()).upper()
     OrderID = random_uuid[:7]
-    print("Order No. %s", OrderID.upper())
+    print("Order No. "+ OrderID)
 
     cartObject = json.loads(order.cart.json())  # Use date.today() to get the current date
     # print(cartObject)
@@ -75,7 +75,6 @@ def place_order(order):
     connection.commit()
 
     cursor.close()
-    connection.close()
 
     return {"message": "Data inserted successfully: {}".format(data_order)}
 

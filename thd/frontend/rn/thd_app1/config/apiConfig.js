@@ -148,7 +148,7 @@ const signOut = async () => {
 
   const placeOrder = async (data) => {
     let pl = JSON.stringify(data)
-    console.log(pl);
+    
     try {
       
       const response = await fetch(`${API_URL}/placeOrder`, {
@@ -173,7 +173,7 @@ const signOut = async () => {
       
       // Optionally handle success (e.g., show success message)
     } catch (error) {
-      console.error('API Error (Sign Up):', error);
+      console.error('API Error (Place Order):', error);
       // Handle error
     }
   };

@@ -40,9 +40,8 @@ const Checkout = ({ navigation }) => {
   const [showError, setShowError] = useState(false);
 
   const username = useGlobalState('username');
+  const isLoggedIn = useGlobalState('isLoggedIn');
 
-
-  
   const amTimes = [
     '12:00 AM', '12:30 AM', 
     '1:00 AM', '1:30 AM', 
@@ -73,9 +72,6 @@ const Checkout = ({ navigation }) => {
 
   const availableTimes = timeSlot === 'AM' ? amTimes : pmTimes;
 
-  
-    
-
   // Function to format phone number
   const formatPhoneNumber = (value) => {
       if (!value) return value;
@@ -104,46 +100,37 @@ const Checkout = ({ navigation }) => {
       return;
     }
     
-    try {
-      const scheduledTime = `${pickupDay} ${pickupTime}`;
-      let pkup = false;
-      if (isPickup == 'pickup')  {
-        pkup = true;
-      };  
-      
-      if (username == 'Guest'){
-        setName(`${name} (Guest)`)
-      }
-      else setName(username);
-      const data = {
-        name: name,
-        phone: phone,
-        address: address,
-        pickup: pkup,
-        scheduledTime: scheduledTime,
-        cart:cart,
-        cartTotal: cartTotal
-      };
-      //console.log(data);
-      const response = await placeOrder(data);
-      console.log('API Response:', response);
-      // console.log('email: ', email);
-      // console.log('pass: ', password);
-      
-      // Handle data as needed (e.g., update state with fetched items)
-
-    } catch (error) {
-      console.error('API Error:', error.message);
-      setErrorMsg(error.message);
-      setShowError(true);
+    
+    const scheduledTime = `${pickupDay} ${pickupTime}`;
+    let pkup = false;
+    if (isPickup == 'pickup')  {
+      pkup = true;
+    };  
+    
+    if (username == 'Guest'){
+      setName(`${name} (Guest)`)
     }
-    setErrorMsg('');
-    setShowError(false);
+    else setName(username);
+    const data = {
+      name: name,
+      phone: phone,
+      address: address,
+      pickup: pkup,
+      scheduledTime: scheduledTime,
+      cart: cart,
+      cartTotal: cartTotal
+    };
+    //console.log(data);
+    //moved command to Details
+    // const response = await placeOrder(data);
+    // console.log('API Response:', response);
+    // console.log('email: ', email);
+    // console.log('pass: ', password);
+    
+    // Handle data as needed (e.g., update state with fetched items)
     
     
-   
-
-    navi.navigate('Menu');
+    navi.navigate('Details', data);
 
     // PushNotification.localNotification({
     //   title: "Order Confirmation",
@@ -152,29 +139,28 @@ const Checkout = ({ navigation }) => {
 
     // Here you could also send the order details to your backend
 
-    Alert.alert('Order placed successfully!');
   };
 
-   
+
   return (
     <View style={styles.container}>
-      <Text>Enter your details:</Text>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Number" value={phone} onChangeText={handlePhone} style={styles.input} keyboardType="phone-pad"/>
-      <TextInput placeholder="Address" value={address} onChangeText={setAddress} style={styles.input} />
+      <Text style={styles.text}>Enter your details:</Text>
+      <TextInput placeholder="Name" placeholderTextColor="#aaa" value={name} onChangeText={setName} style={styles.input} />
+      <TextInput placeholder="Number" placeholderTextColor="#aaa" value={phone} onChangeText={handlePhone} style={styles.input} keyboardType="phone-pad"/>
+      <TextInput placeholder="Address" placeholderTextColor="#aaa" value={address} onChangeText={setAddress} style={styles.input} />
       
-      <Text>Select Pickup/Delivery Day:</Text>
+      <Text style={styles.text}>Select Pickup/Delivery Day:</Text>
       <TouchableOpacity onPress={() => setShowDatePicker(!showDatePicker)} style={styles.input}>
-        <Text>{pickupDay ? format(pickupDay, 'eeee, MMM d') : 'Select Date'}</Text>
+        <Text style={styles.text}>{pickupDay ? format(pickupDay, 'eeee, MMM d') : 'Select Date'}</Text>
       </TouchableOpacity>
       {showDatePicker && (
-        <Modal transparent={true} animationType="none">
+        <Modal transparent={true} animationType="slide">
           <View style={styles.modalContainer}>
+            <Button title="Close" onPress={() => setShowDatePicker(false)} />
             <Picker
               selectedValue={pickupDay}
               onValueChange={(itemValue) => {
                 setPickupDay(itemValue);
-                setShowDatePicker(false);
               }}
               style={styles.picker}
             >
@@ -186,18 +172,18 @@ const Checkout = ({ navigation }) => {
         </Modal>
       )}
 
-      <Text>Select AM/PM:</Text>
+      <Text style={styles.text}>Select AM/PM:</Text>
       <TouchableOpacity onPress={() => setShowAmPmPicker(!showAmPmPicker)} style={styles.input}>
-        <Text>{timeSlot ? timeSlot : 'Select AM/PM'}</Text>
+        <Text style={styles.text}>{timeSlot ? timeSlot : 'Select AM/PM'}</Text>
       </TouchableOpacity>
       {showAmPmPicker && (
-        <Modal transparent={true} animationType="none">
+        <Modal transparent={true} animationType="slide">
           <View style={styles.modalContainer}>
+            <Button title="Close" onPress={() => setShowAmPmPicker(false)} />
             <Picker
               selectedValue={timeSlot}
               onValueChange={(itemValue) => {
                 setTimeSlot(itemValue);
-                setShowAmPmPicker(false);
               }}
               style={styles.picker}
             >
@@ -208,18 +194,18 @@ const Checkout = ({ navigation }) => {
         </Modal>
       )}
 
-      <Text>Select Pickup/Delivery Time:</Text>
+      <Text style={styles.text}>Select Pickup/Delivery Time:</Text>
       <TouchableOpacity onPress={() => setShowTimePicker(!showTimePicker)} style={styles.input}>
-        <Text>{pickupTime ? pickupTime : 'Select Time'}</Text>
+        <Text style={styles.text}>{pickupTime ? pickupTime : 'Select Time'}</Text>
       </TouchableOpacity>
       {showTimePicker && (
-        <Modal transparent={true} animationType="none">
+        <Modal transparent={true} animationType="slide">
           <View style={styles.modalContainer}>
+            <Button title="Close" onPress={() => setShowTimePicker(false)} />
             <Picker
               selectedValue={pickupTime}
               onValueChange={(itemValue) => {
                 setPickupTime(itemValue);
-                setShowTimePicker(false);
               }}
               style={styles.picker}
             >
@@ -231,24 +217,24 @@ const Checkout = ({ navigation }) => {
         </Modal>
       )}
 
-      <Text>Select Pickup or Delivery:</Text>
+      <Text style={styles.text}>Select Pickup or Delivery:</Text>
       <RadioButton.Group
         onValueChange={value => setPickup(value)}
         value={isPickup}
       >
         <View style={styles.radioContainer}>
           <View style={styles.radioItem}>
-            <RadioButton value="pickup" />
-            <Text>Pickup</Text>
+            <RadioButton value="pickup" color="#fff"/>
+            <Text style={styles.text}>Pickup</Text>
           </View>
           <View style={styles.radioItem}>
-            <RadioButton value="delivery" />
-            <Text>Delivery</Text>
+            <RadioButton value="delivery" color="#fff"/>
+            <Text style={styles.text}>Delivery</Text>
           </View>
         </View>
       </RadioButton.Group>
 
-      <Button title="Place Order" onPress={handleOrder}/>
+      <Button title="Place Order" onPress={handleOrder} color="#b94b28"/>
     </View>
   );
 };
@@ -258,10 +244,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+    backgroundColor: '#313338',
   },
   picker: {
     height: 50,
     width: '100%',
+    color: '#fff',
   },
   input: {
     borderWidth: 1,
@@ -269,6 +257,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
+    color: '#fff',
   },
   modalContainer: {
     flex: 1,
@@ -285,6 +274,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 8,
+  },
+  text: {
+    color: '#fff',
   },
 });
 

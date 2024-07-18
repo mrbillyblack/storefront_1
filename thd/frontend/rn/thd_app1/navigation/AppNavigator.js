@@ -9,10 +9,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useGlobalState } from '../config/apiConfig';
 import Shop from '../components/Shop';
 import HomeScreen from '../components/HomeScreen';
+import OrderConfirm from '../components/OrderConfirm';
 import Info from '../components/Info'
 import Register from '../components/Register';
 import Checkout from '../components/Checkout';
 import Confirm from '../components/Confirm';
+import Details from '../components/Details';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -53,6 +55,8 @@ const ShopStack = () => (
     }}>
     <Stack.Screen name="Menu" component={Shop} />
     <Stack.Screen name="Checkout" component={Checkout} />
+    <Stack.Screen name="Details" component={Details} />
+    <Stack.Screen name="OrderConfirm" component={OrderConfirm} />
   </Stack.Navigator>
 );
 
