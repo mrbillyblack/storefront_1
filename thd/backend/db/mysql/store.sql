@@ -14,11 +14,6 @@ CREATE TABLE menu(
 
 INSERT INTO menu (ItemName, Price, OnMenu)
 values
-    ('Lemon Haze', 30, True),
-    ('Black Cherry Gelato', 25, True),
-    ('Cereal Milk', 20, True),
-    ('Acapulco Gold', 20, True),
-    ('$5 Special', 5, True);
 
 CREATE TABLE orders(
     OrderNo int NOT NULL AUTO_INCREMENT,
@@ -34,7 +29,5 @@ CREATE TABLE orders(
 );
 
 
-INSERT INTO orders(UserName, Phone, `Address`, Pickup, ScheduledTime, Details, Total, OrderID)
-VALUES ('JohnDoe', '1234567890', '123 Elm Street', TRUE, '2024-07-12 14:00:00', 'Item1:2,Item2:1', 100, 'ABC12345');
 
 
