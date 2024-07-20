@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, RootModel
+import requests
 from typing import  Dict, List, Optional
 from utils.auth import get_user, sign_up, sign_in, sign_in_as_guest, sign_out
 from utils.database import fetch_menu_items, place_order
@@ -9,6 +10,9 @@ from utils.database import fetch_menu_items, place_order
 import uvicorn
 
 import json
+
+
+load_dotenv()
 
 origins = [
     "http://localhost",
@@ -49,6 +53,13 @@ class OrderItem(BaseModel):
     name: str
     price: int
     quantity: int
+
+class MenuItem(BaseModel):
+    id: str
+    name: str
+    price: int
+    onMenu: bool
+
 
 class Cart(RootModel):
     root: Dict[str, OrderItem]
@@ -110,6 +121,7 @@ def signin_as_guest():
 @app.post("/signout")
 def signout():
     return sign_out()
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

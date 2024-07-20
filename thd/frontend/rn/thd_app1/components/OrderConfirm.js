@@ -18,6 +18,7 @@ const OrderConfirm = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Order Confirmed</Text>
+      <Text Style={styles.subheader}>screenshot this page</Text>
       <View style={styles.detailItem}>
         <Text style={styles.label}>Name:</Text>
         <Text style={styles.value}>{data.name}</Text>
@@ -37,7 +38,7 @@ const OrderConfirm = () => {
       <View style={styles.detailItem}>
         <Text style={styles.label}>Scheduled Time:</Text>
       </View>
-      <Text style={styles.value}>{data.scheduledTime}</Text>
+      <Text style={styles.value}>{`${data.scheduledTime.slice(0, 15)}${data.scheduledTime.slice(33)}`}</Text>
       <View style={styles.cartContainer}>
         <Text style={styles.cartHeader}>Cart Items</Text>
         {Object.keys(data.cart).map(key => {
@@ -71,6 +72,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
     color: '#fff',
+  },
+  subheader: {
+    fontsize: 14,
+    textAlign: 'center',
+    color: '#fff',
+    justifyContent: 'center',
+
   },
   detailItem: {
     flexDirection: 'row',

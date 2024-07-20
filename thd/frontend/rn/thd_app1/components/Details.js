@@ -13,12 +13,11 @@ const Details = () => {
 
     const [errorMsg, setErrorMsg] = useState('');
     const [showError, setShowError] = useState(false);
-    const [menuItems, setMenuItems] = useState([]);
-
+    const [appointment, setAppointment] = useState('');
+    
 
     const handleConfirmOrder = async () => {
       try {
-        
         const response = await placeOrder(data);
         console.log('API Response:', response);
 
@@ -59,7 +58,7 @@ const Details = () => {
           <Text style={styles.label}>Scheduled Time:</Text>
           
         </View>
-        <Text style={styles.value}>{data.scheduledTime}</Text>
+        <Text style={styles.value}>{`${data.scheduledTime.slice(0, 15)}${data.scheduledTime.slice(33)}`}</Text>
         <View style={styles.cartContainer}>
           <Text style={styles.cartHeader}>Cart Items</Text>
           {Object.keys(data.cart).map(key => {
@@ -68,7 +67,7 @@ const Details = () => {
           <View key={item.id} style={styles.cartContainer}>
             <Text style={styles.cartItemName}>{item.name}</Text>
             <Text style={styles.cartItemPrice}>Price: ${item.price}</Text>
-            <Text style={styles.cartItemQuantity}> 3.5g x {item.quantity}</Text>
+            <Text style={styles.cartItemQuantity}>Qty: 3.5 x {item.quantity}</Text>
           </View>
             );})}
         </View>

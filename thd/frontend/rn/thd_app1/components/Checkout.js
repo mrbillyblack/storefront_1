@@ -1,12 +1,13 @@
 // components/Checkout.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Button, StyleSheet, Keyboard, Alert } from 'react-native';
 import * as PushNotification from 'expo-notifications';
 import { RadioButton } from 'react-native-paper';
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
 import { Picker } from '@react-native-picker/picker';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { addDays, format } from 'date-fns';
-import { placeOrder, useGlobalState } from '../config/apiConfig'
+import { placeOrder, useGlobalState } from '../config/apiConfig';
 
 const generateNextDays = (numDays) => {
   const days = [];
@@ -38,6 +39,8 @@ const Checkout = ({ navigation }) => {
 
   const [errorMsg, setErrorMsg] = useState('');
   const [showError, setShowError] = useState(false);
+  const [phoneValid, setPhoneValid] = useState(true);
+
 
   const username = useGlobalState('username');
   const isLoggedIn = useGlobalState('isLoggedIn');
@@ -70,8 +73,15 @@ const Checkout = ({ navigation }) => {
     '10:00 PM', '10:30 PM', 
     '11:00 PM', '11:30 PM'];
 
-  const availableTimes = timeSlot === 'AM' ? amTimes : pmTimes;
+  const availableTimes = timeSlot === 'AM' ? amTimes : pmTimes; 
 
+
+  // const validatePhoneNumber = (value) => {
+  //   if (!isValidPhoneNumber) {
+  //     return false;
+  //   };
+  //   return true;
+  // }
   // Function to format phone number
   const formatPhoneNumber = (value) => {
       if (!value) return value;
@@ -81,9 +91,12 @@ const Checkout = ({ navigation }) => {
 
       if (phoneNumberLength < 4) return phoneNumber;
       if (phoneNumberLength < 7) {
-          return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+          return `(${phoneNumber.slice(0, 3)})${phoneNumber.slice(3)}`;
       }
-
+      if (phoneNumberLength >= 10) {
+        Keyboard.dismiss();
+        return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+      }
       return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   };
 
@@ -95,10 +108,10 @@ const Checkout = ({ navigation }) => {
   
 
   const handleOrder = async () => {
-    if (!name || !phone || !address || !pickupDay || !pickupTime) {
+    if (!name || !phone || !pickupDay || !pickupTime) {
       Alert.alert('Please fill out all fields');
       return;
-    }
+    };
     
     
     const scheduledTime = `${pickupDay} ${pickupTime}`;
@@ -106,7 +119,11 @@ const Checkout = ({ navigation }) => {
     if (isPickup == 'pickup')  {
       pkup = true;
     };  
-    
+
+    if (!isValidPhoneNumber(phone, 'US')) {
+      Alert.alert('Enter a valid phone number.');
+      return;
+    };
     if (username == 'Guest'){
       setName(`${name} (Guest)`)
     }
@@ -146,8 +163,8 @@ const Checkout = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.text}>Enter your details:</Text>
       <TextInput placeholder="Name" placeholderTextColor="#aaa" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Number" placeholderTextColor="#aaa" value={phone} onChangeText={handlePhone} style={styles.input} keyboardType="phone-pad"/>
-      <TextInput placeholder="Address" placeholderTextColor="#aaa" value={address} onChangeText={setAddress} style={styles.input} />
+      <TextInput placeholder="Number" placeholderTextColor="#aaa" value={phone} onChangeText={handlePhone} style={[styles.input, !phoneValid && styles.inputError]} keyboardType="phone-pad"/>
+      <TextInput placeholder="Address (leave blank if pickup)" placeholderTextColor="#aaa" value={address} onChangeText={setAddress} style={styles.input} />
       
       <Text style={styles.text}>Select Pickup/Delivery Day:</Text>
       <TouchableOpacity onPress={() => setShowDatePicker(!showDatePicker)} style={styles.input}>
@@ -199,13 +216,14 @@ const Checkout = ({ navigation }) => {
         <Text style={styles.text}>{pickupTime ? pickupTime : 'Select Time'}</Text>
       </TouchableOpacity>
       {showTimePicker && (
-        <Modal transparent={true} animationType="slide">
+        <Modal transparent={true} animationType="none">
           <View style={styles.modalContainer}>
             <Button title="Close" onPress={() => setShowTimePicker(false)} />
             <Picker
               selectedValue={pickupTime}
               onValueChange={(itemValue) => {
                 setPickupTime(itemValue);
+                
               }}
               style={styles.picker}
             >
@@ -216,12 +234,10 @@ const Checkout = ({ navigation }) => {
           </View>
         </Modal>
       )}
-
       <Text style={styles.text}>Select Pickup or Delivery:</Text>
       <RadioButton.Group
         onValueChange={value => setPickup(value)}
-        value={isPickup}
-      >
+        value={isPickup}>
         <View style={styles.radioContainer}>
           <View style={styles.radioItem}>
             <RadioButton value="pickup" color="#fff"/>
@@ -233,7 +249,6 @@ const Checkout = ({ navigation }) => {
           </View>
         </View>
       </RadioButton.Group>
-
       <Button title="Place Order" onPress={handleOrder} color="#b94b28"/>
     </View>
   );
@@ -258,6 +273,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 5,
     color: '#fff',
+  },
+  inputError: {
+    borderColor: '#f9412c',
   },
   modalContainer: {
     flex: 1,

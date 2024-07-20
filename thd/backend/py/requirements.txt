@@ -3,6 +3,7 @@ fastapi
 mysql-connector-python
 python-dotenv==1.0.1
 pydantic==2.8.2
+requests
 supabase==2.5.1
 uuid==1.30
 uvicorn==0.30.1
