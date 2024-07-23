@@ -17,7 +17,9 @@ load_dotenv()
 origins = [
     "http://localhost",
     "http://localhost:8000",
-    "http://172.20.0.10:5000"
+    "http://172.20.0.10:5000",
+    "https://theherbdepot.vip",
+    "http://theherbdepot.vip"
 ]
 
 
