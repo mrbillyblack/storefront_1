@@ -14,6 +14,11 @@ CREATE TABLE menu(
 
 INSERT INTO menu (ItemName, Price, OnMenu)
 values
+    ('Lemon Haze', 30, True),
+    ('Black Cherry Gelato', 25, True),
+    ('Cereal Milk', 20, True),
+    ('Acapulco Gold', 20, True),
+    ('$5 Special', 5, True);
 
 CREATE TABLE orders(
     OrderNo int NOT NULL AUTO_INCREMENT,

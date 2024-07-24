@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "thd_app1",
-    "slug": "thd_app1",
+    "slug": "storefront1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shockersp.storefront1"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +26,15 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d5944023-4740-4278-8055-bc482b169099"
+      }
+    },
+    "owner": "shockersp"
   }
 }
