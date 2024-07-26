@@ -1,66 +1,85 @@
 // components/Confirm.js
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Row, Col, Image, Button } from 'react-bootstrap';
-import './Confirm.css'; // Import the custom CSS file
+import { signUp } from '../config/apiConfig';
+import { Alert, Button, Form, Container, Row, Col } from 'react-bootstrap';
+import './Register.css'; // Import the custom CSS file
 
-const Confirm = () => {
+export default function Register() {
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [showError, setShowError] = useState(false);
+
   const history = useHistory();
-  const phoneNumber = '(646)960-4716'; // Replace with your phone number
 
-  const handleContactPress = () => {
-    const url = `sms:${phoneNumber}`;
-    window.open(url, '_blank').catch((err) => console.error('Error:', err));
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    try {
+      const signup = await signUp(email, password, userName);
+      console.log('API Response:', signup);
+      console.log('email: ', email);
+      console.log('pass: ', password);
+
+      setErrorMsg('');
+      setShowError(false);
+      Alert('Registration successful!');
+      history.push('/login');
+    } catch (error) {
+      console.error('API Error:', error.message);
+      setErrorMsg(error.message);
+      setShowError(true);
+    }
   };
 
   return (
-    <Container className="confirm-container text-center">
+    <Container className="register-container">
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
-          <Image 
-            src="/path/to/your/image/applogo.jpg" // Adjust the path accordingly
-            alt="App Logo"
-            className="confirm-image"
-            fluid
-          />
-          <p className="text-white mt-3">You're logged in!</p>
-          <p className="text-white">Use the navigation menu to go to the shop.</p>
-          <div className="contact-button-container">
-            <Button variant="primary" onClick={handleContactPress}>
-              Contact
+          <h1 className="title text-center">Sign Up</h1>
+          {showError && (
+            <Alert variant="danger">
+              Error: {errorMsg}
+            </Alert>
+          )}
+          <Form onSubmit={handleSignUp}>
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control 
+                type="email" 
+                placeholder="Enter email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required 
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Username</Form.Label>
+              <Form.Control 
+                type="text" 
+                placeholder="Enter username" 
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                required 
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control 
+                type="password" 
+                placeholder="Password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required 
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Register
             </Button>
-          </div>
+          </Form>
         </Col>
       </Row>
     </Container>
   );
-};
-
-export default Confirm;
-```
-
-### Confirm.css
-```css
-.confirm-container {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: #313338;
-  min-height: 100vh;
-  padding: 16px;
-}
-
-.confirm-image {
-  width: 200px;
-  height: 200px;
-  margin-bottom: 20px;
-}
-
-.contact-button-container {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  padding: 0 16px;
 }

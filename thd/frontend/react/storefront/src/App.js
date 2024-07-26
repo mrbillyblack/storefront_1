@@ -7,8 +7,8 @@ import Loading from './components/Loading'; // Fallback component for lazy loadi
 // Lazy load components
 const Shop = React.lazy(() => import('./components/Shop'));
 const HomeScreen = React.lazy(() => import('./components/HomeScreen'));
-const OrderConfirm = React.lazy(() => import('./components/OrderConfirm'));
-const Info = React.lazy(() => import('./components/Profile'));
+const OrderConfirm = React.lazy(() => import('./components/OrderConfirmation'));
+
 const Register = React.lazy(() => import('./components/Register'));
 const Checkout = React.lazy(() => import('./components/Checkout'));
 const Confirm = React.lazy(() => import('./components/Confirm'));

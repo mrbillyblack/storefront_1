@@ -1,36 +1,28 @@
-// components/Shop.js
 import React, { useState, useEffect } from 'react';
+import { Alert, View, Text, Button, FlatList, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import { getMenu } from '../config/apiConfig';
-import { Alert, View, Text, Button, FlatList, TouchableOpacity, 
-  StyleSheet, ScrollView } from 'react-native';
 
-
-// const inventory = [
-//   { id: '1', name: 'Item 1', price: 10 },
-//   { id: '2', name: 'Item 2', price: 20 },
-//   // Add more items as needed
-// ];
-
+// Conditional imports or component adjustments may be needed for web
+import { Dropdown } from 'react-native-web'; // Import Dropdown for web
 
 const Shop = ({ navigation }) => {
-  const [tempCart, setTempCart] = useState({}); 
+  const [tempCart, setTempCart] = useState({});
   const [cart, setCart] = useState({});
   const [menuItems, setMenuItems] = useState([]);
   const [showCartDetails, setShowCartDetails] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
-        try {
-            const data = await getMenu();
-            setMenuItems(data);
-        } catch (error) {
-            // Handle errors (e.g., show error message)
-            console.error('Error fetching menu items:', error);
-        }
+      try {
+        const data = await getMenu();
+        setMenuItems(data);
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+      }
     };
 
     fetchItems();
-  }, []); // Empty dependency array ensures useEffect runs once on component mount
+  }, []);
 
   const selectItem = (id, change) => {
     setTempCart((prevTempCart) => {
@@ -47,7 +39,6 @@ const Shop = ({ navigation }) => {
         const existingQuantity = prevCart[id]?.quantity || 0;
         updatedCart[id] = { ...tempCart[id], quantity: existingQuantity + tempCart[id].quantity };
       }
-      console.log(updatedCart);
       return updatedCart;
     });
     setTempCart({});
@@ -55,17 +46,14 @@ const Shop = ({ navigation }) => {
 
   const updateCart = (id, change) => {
     setCart((prevCart) => {
-      // Calculate new quantity
       const newQuantity = (prevCart[id]?.quantity || 0) + change;
-  
-      // If quantity drops to 0 or below, remove the item from the cart
+
       if (newQuantity <= 0) {
         const updatedCart = { ...prevCart };
         delete updatedCart[id];
         return updatedCart;
       }
-  
-      // Otherwise, update the quantity of the item in the cart
+
       return {
         ...prevCart,
         [id]: {
@@ -85,11 +73,13 @@ const Shop = ({ navigation }) => {
       Alert.alert('Add items to the cart.');
       return;
     }
-    navigation.navigate('Checkout', { cart, cartTotal }); 
+    navigation.navigate('Checkout', { cart, cartTotal });
     setCart({});
   };
 
   const cartTotal = Object.values(cart).reduce((sum, item) => sum + (item.quantity * item.price), 0);
+
+  const DropdownComponent = Platform.OS === 'web' ? Dropdown : TouchableOpacity;
 
   return (
     <View style={styles.container}>
@@ -139,8 +129,8 @@ const Shop = ({ navigation }) => {
             ))}
           </View>
         )}
-        <Button style={{padding: 12}} title="Add to Cart" onPress={add2Cart} />
-        <Button title="Checkout" onPress={toCheckout}/>
+        <Button style={styles.button} title="Add to Cart" onPress={add2Cart} />
+        <Button style={styles.button} title="Checkout" onPress={toCheckout}/>
       </View>
     </View>
   );
@@ -150,9 +140,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#313338', // Dark mode background color
+    backgroundColor: '#313338',
     color: 'white',
-    borderBlockEndColor: '#212121',
   },
   item: {
     flexDirection: 'row',
@@ -162,7 +151,7 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 14,
-    color: 'white', // White text color
+    color: 'white',
   },
   scrollView:{
     flex: 1,
@@ -170,7 +159,7 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 16,
-    color: '#ccc', // Lighter text color for price
+    color: '#ccc',
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -187,7 +176,7 @@ const styles = StyleSheet.create({
   },
   quantityText: {
     fontSize: 16,
-    color: 'white', // White text color for quantity
+    color: 'white',
     marginHorizontal: 10,
   },
   footer: {
@@ -198,7 +187,7 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white', // White text color for total
+    color: 'white',
     marginBottom: 10,
   },
   expandButton: {
@@ -208,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'green',
     textDecorationLine: 'underline',
     marginBottom: 12,
-    font: 14,
+    fontSize: 14,
   },
   cartSummary: {
     marginTop: 10,
@@ -219,7 +208,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cartItemName: {
-    color: 'white', // White text color for cart item names
+    color: 'white',
     fontSize: 14,
   },
 });

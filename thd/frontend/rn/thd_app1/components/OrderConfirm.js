@@ -52,7 +52,7 @@ const OrderConfirm = () => {
             );})}
       </View>
       <View style={styles.detailItem}>
-        <Text style={styles.label}>Total Cost:</Text>
+        <Text style={styles.label}>Total:</Text>
         <Text style={styles.value}>${data.cartTotal.toFixed(2)}</Text>
       </View>
       <Button title="Back to Menu" onPress={handleGoToMenu} color="#b74b28" />

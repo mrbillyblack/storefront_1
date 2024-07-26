@@ -43,38 +43,38 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../assets/applogo.jpg')} // Replace with your image path
-        style={styles.image}
-        resizeMode="contain" // Adjust resizeMode as per your image requirements
-      />
-      <Text style={styles.title}>Sign In</Text>
-      {showError && (
-        <Text style={styles.errorText}>Error: {error}</Text>
-      )}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        placeholderTextColor="#ccc" // Placeholder text color
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        placeholderTextColor="#ccc" // Placeholder text color
-      />
-      <Button title="Submit" onPress={handleSignIn} />
-      <Button title="Register" onPress={() => navigation.navigate('Register')} />
-      <TouchableOpacity onPress={handleSignInGuest}>
-        <Text style={styles.guestText}>continue as Guest</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.container}>
+          <Image
+            source={require('../assets/applogo.jpg')} // Replace with your image path
+            style={styles.image}
+            resizeMode="contain" // Adjust resizeMode as per your image requirements
+          />
+          <Text style={styles.title}>Sign In</Text>
+          {showError && (
+            <Text style={styles.errorText}>Error: {error}</Text>
+          )}
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            placeholderTextColor="#ccc" // Placeholder text color
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            placeholderTextColor="#ccc" // Placeholder text color
+          />
+          <Button title="Submit" onPress={handleSignIn} />
+          <Button title="Register" onPress={() => navigation.navigate('Register')} />
+          <TouchableOpacity onPress={handleSignInGuest}>
+            <Text style={styles.guestText}>continue as Guest</Text>
+          </TouchableOpacity> 
+      </View> 
   );
 };
 
