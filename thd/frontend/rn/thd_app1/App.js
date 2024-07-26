@@ -4,6 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AppNavigator from './navigation/AppNavigator';
 import HomeScreen from './components/HomeScreen';
 import Shop from './components/Shop';
+import { LogBox } from 'react-native';
+
+
 
 const Stack = createStackNavigator();
 

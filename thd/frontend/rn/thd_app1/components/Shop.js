@@ -1,7 +1,8 @@
 // components/Shop.js
 import React, { useState, useEffect } from 'react';
 import { getMenu } from '../config/apiConfig';
-import { Alert, View, Text, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { Alert, View, Text, Button, FlatList, TouchableOpacity, 
+  StyleSheet, ScrollView } from 'react-native';
 
 
 // const inventory = [
@@ -92,25 +93,27 @@ const Shop = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={menuItems}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>${item.price}</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={() => selectItem(item.id, -1)} style={styles.button}>
-                <Text style={styles.buttonText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>{tempCart[item.id]?.quantity || 0}</Text>
-              <TouchableOpacity onPress={() => selectItem(item.id, 1)} style={styles.button}>
-                <Text style={styles.buttonText}>+</Text>
-              </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <FlatList
+          data={menuItems}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemPrice}>${item.price}</Text>
+              <View style={styles.quantityContainer}>
+                <TouchableOpacity onPress={() => selectItem(item.id, -1)} style={styles.button}>
+                  <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.quantityText}>{tempCart[item.id]?.quantity || 0}</Text>
+                <TouchableOpacity onPress={() => selectItem(item.id, 1)} style={styles.button}>
+                  <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      </ScrollView>
       <View style={styles.footer}>
         <Text style={styles.totalText}>Total: ${cartTotal}</Text>
         <TouchableOpacity
@@ -137,7 +140,7 @@ const Shop = ({ navigation }) => {
           </View>
         )}
         <Button style={{padding: 12}} title="Add to Cart" onPress={add2Cart} />
-        <Button title="Checkout" onPress={toCheckout} />
+        <Button title="Checkout" onPress={toCheckout}/>
       </View>
     </View>
   );
@@ -160,6 +163,10 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 14,
     color: 'white', // White text color
+  },
+  scrollView:{
+    flex: 1,
+    backgroundColor: '#313338',
   },
   itemPrice: {
     fontSize: 16,

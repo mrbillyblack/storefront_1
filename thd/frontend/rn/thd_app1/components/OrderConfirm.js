@@ -18,7 +18,7 @@ const OrderConfirm = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Order Confirmed</Text>
-      <Text Style={styles.subheader}>screenshot this page</Text>
+      <Text style={styles.subHeader}>screenshot this page</Text>
       <View style={styles.detailItem}>
         <Text style={styles.label}>Name:</Text>
         <Text style={styles.value}>{data.name}</Text>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
   },
-  subheader: {
+  subHeader: {
     fontsize: 14,
     textAlign: 'center',
     color: '#fff',

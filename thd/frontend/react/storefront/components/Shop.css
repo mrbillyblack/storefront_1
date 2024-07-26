@@ -1,0 +1,11 @@
+/* Example custom styles for Shop */
+.container {
+    background-color: #313338;
+    min-height: 100vh;
+    padding-top: 20px;
+  }
+  .list-group-item {
+    background-color: #212121;
+    border: none;
+  }
+  

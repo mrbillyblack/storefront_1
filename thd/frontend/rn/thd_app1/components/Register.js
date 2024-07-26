@@ -1,7 +1,8 @@
 // frontend/screens/Register.js
 
 import React, { useState } from 'react';
-import { Alert, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { Alert, View, Text, TextInput, Button, StyleSheet,
+  KeyboardAvoidingView, ScrollView } from 'react-native';
 import { signUp } from '../config/apiConfig'
 
 
@@ -36,33 +37,35 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      {showError && (
-        <Text>Error: {errorMsg}</Text>
-      )}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={userName}
-        onChangeText={setUserName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button title="Register" onPress={() => handleSignUp()} />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign Up</Text>
+        {showError && (
+          <Text>Error: {errorMsg}</Text>
+        )}
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={userName}
+          onChangeText={setUserName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <Button title="Register" onPress={() => handleSignUp()} />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -83,5 +86,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+  },
+  scrollView: {
+    flexGrow: 1,
   },
 });

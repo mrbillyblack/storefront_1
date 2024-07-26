@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+boto3==1.34.147
 fastapi
 mysql-connector-python
 python-dotenv==1.0.1

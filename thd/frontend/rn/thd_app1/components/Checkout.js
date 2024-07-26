@@ -1,6 +1,6 @@
 // components/Checkout.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, Button, StyleSheet, Keyboard, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, Button, StyleSheet, ScrollView, Keyboard, Alert } from 'react-native';
 import * as PushNotification from 'expo-notifications';
 import { RadioButton } from 'react-native-paper';
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
@@ -160,97 +160,92 @@ const Checkout = ({ navigation }) => {
 
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Enter your details:</Text>
-      <TextInput placeholder="Name" placeholderTextColor="#aaa" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Number" placeholderTextColor="#aaa" value={phone} onChangeText={handlePhone} style={[styles.input, !phoneValid && styles.inputError]} keyboardType="phone-pad"/>
-      <TextInput placeholder="Address (leave blank if pickup)" placeholderTextColor="#aaa" value={address} onChangeText={setAddress} style={styles.input} />
-      
-      <Text style={styles.text}>Select Pickup/Delivery Day:</Text>
-      <TouchableOpacity onPress={() => setShowDatePicker(!showDatePicker)} style={styles.input}>
-        <Text style={styles.text}>{pickupDay ? format(pickupDay, 'eeee, MMM d') : 'Select Date'}</Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <Modal transparent={true} animationType="slide">
-          <View style={styles.modalContainer}>
-            <Button title="Close" onPress={() => setShowDatePicker(false)} />
-            <Picker
-              selectedValue={pickupDay}
-              onValueChange={(itemValue) => {
-                setPickupDay(itemValue);
-              }}
-              style={styles.picker}
-            >
-              {nextDays.map((day) => (
-                <Picker.Item key={day.toString()} label={format(day, 'eeee, MMM d')} value={day} />
-              ))}
-            </Picker>
-          </View>
-        </Modal>
-      )}
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      <View style={styles.container}>
+        <Text style={styles.text}>Enter your details:</Text>
+        <TextInput placeholder="Email" placeholderTextColor="#aaa" value={name} onChangeText={setName} style={styles.input} />
+        <TextInput placeholder="Number" placeholderTextColor="#aaa" value={phone} onChangeText={handlePhone} style={[styles.input, !phoneValid && styles.inputError]} keyboardType="phone-pad"/>
+        <TextInput placeholder="Address (leave blank if pickup)" placeholderTextColor="#aaa" value={address} onChangeText={setAddress} style={styles.input} />
 
-      <Text style={styles.text}>Select AM/PM:</Text>
-      <TouchableOpacity onPress={() => setShowAmPmPicker(!showAmPmPicker)} style={styles.input}>
-        <Text style={styles.text}>{timeSlot ? timeSlot : 'Select AM/PM'}</Text>
-      </TouchableOpacity>
-      {showAmPmPicker && (
-        <Modal transparent={true} animationType="slide">
-          <View style={styles.modalContainer}>
-            <Button title="Close" onPress={() => setShowAmPmPicker(false)} />
-            <Picker
-              selectedValue={timeSlot}
-              onValueChange={(itemValue) => {
-                setTimeSlot(itemValue);
-              }}
-              style={styles.picker}
-            >
-              <Picker.Item label="AM" value="AM" />
-              <Picker.Item label="PM" value="PM" />
-            </Picker>
-          </View>
-        </Modal>
-      )}
+        <Text style={styles.text}>Select Pickup/Delivery Day:</Text>
+        <TouchableOpacity onPress={() => setShowDatePicker(!showDatePicker)} style={styles.input}>
+          <Text style={styles.text}>{pickupDay ? format(pickupDay, 'eeee, MMM d') : 'Select Date'}</Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <Modal transparent={true} animationType="slide">
+            <View style={styles.modalContainer}>
+              <Button title="Close" onPress={() => setShowDatePicker(false)} />
+              <Picker
+                selectedValue={pickupDay}
+                onValueChange={(itemValue) => setPickupDay(itemValue)}
+                style={styles.picker}
+              >
+                {nextDays.map((day) => (
+                  <Picker.Item key={day.toString()} label={format(day, 'eeee, MMM d')} value={day} />
+                ))}
+              </Picker>
+            </View>
+          </Modal>
+        )}
 
-      <Text style={styles.text}>Select Pickup/Delivery Time:</Text>
-      <TouchableOpacity onPress={() => setShowTimePicker(!showTimePicker)} style={styles.input}>
-        <Text style={styles.text}>{pickupTime ? pickupTime : 'Select Time'}</Text>
-      </TouchableOpacity>
-      {showTimePicker && (
-        <Modal transparent={true} animationType="none">
-          <View style={styles.modalContainer}>
-            <Button title="Close" onPress={() => setShowTimePicker(false)} />
-            <Picker
-              selectedValue={pickupTime}
-              onValueChange={(itemValue) => {
-                setPickupTime(itemValue);
-                
-              }}
-              style={styles.picker}
-            >
-              {availableTimes.map((time) => (
-                <Picker.Item key={time} label={time} value={time} />
-              ))}
-            </Picker>
-          </View>
-        </Modal>
-      )}
-      <Text style={styles.text}>Select Pickup or Delivery:</Text>
-      <RadioButton.Group
-        onValueChange={value => setPickup(value)}
-        value={isPickup}>
-        <View style={styles.radioContainer}>
-          <View style={styles.radioItem}>
-            <RadioButton value="pickup" color="#fff"/>
-            <Text style={styles.text}>Pickup</Text>
-          </View>
-          <View style={styles.radioItem}>
-            <RadioButton value="delivery" color="#fff"/>
-            <Text style={styles.text}>Delivery</Text>
-          </View>
+        <Text style={styles.text}>Select AM/PM:</Text>
+        <TouchableOpacity onPress={() => setShowAmPmPicker(!showAmPmPicker)} style={styles.input}>
+          <Text style={styles.text}>{timeSlot ? timeSlot : 'Select AM/PM'}</Text>
+        </TouchableOpacity>
+        {showAmPmPicker && (
+          <Modal transparent={true} animationType="slide">
+            <View style={styles.modalContainer}>
+              <Button title="Close" onPress={() => setShowAmPmPicker(false)} />
+              <Picker
+                selectedValue={timeSlot}
+                onValueChange={(itemValue) => setTimeSlot(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="AM" value="AM" />
+                <Picker.Item label="PM" value="PM" />
+              </Picker>
+            </View>
+          </Modal>
+          )}
+
+          <Text style={styles.text}>Select Pickup/Delivery Time:</Text>
+          <TouchableOpacity onPress={() => setShowTimePicker(!showTimePicker)} style={styles.input}>
+            <Text style={styles.text}>{pickupTime ? pickupTime : 'Select Time'}</Text>
+          </TouchableOpacity>
+          {showTimePicker && (
+            <Modal transparent={true} animationType="none">
+              <View style={styles.modalContainer}>
+                <Button title="Close" onPress={() => setShowTimePicker(false)} />
+                <Picker
+                  selectedValue={pickupTime}
+                  onValueChange={(itemValue) => setPickupTime(itemValue)}
+                  style={styles.picker}
+                >
+                  {availableTimes.map((time) => (
+                    <Picker.Item key={time} label={time} value={time} />
+                  ))}
+                </Picker>
+              </View>
+            </Modal>
+          )}
+
+          <Text style={styles.text}>Select Pickup or Delivery:</Text>
+          <RadioButton.Group onValueChange={value => setPickup(value)} value={isPickup}>
+            <View style={styles.radioContainer}>
+              <View style={styles.radioItem}>
+                <RadioButton value="pickup" color="#fff" />
+                <Text style={styles.text}>Pickup</Text>
+              </View>
+              <View style={styles.radioItem}>
+                <RadioButton value="delivery" color="#fff" />
+                <Text style={styles.text}>Delivery</Text>
+              </View>
+            </View>
+          </RadioButton.Group>
+          <Button title="Place Order" onPress={handleOrder} color="#b94b28" />
         </View>
-      </RadioButton.Group>
-      <Button title="Place Order" onPress={handleOrder} color="#b94b28"/>
-    </View>
+      </ScrollView>
+    
   );
 };
 
@@ -265,6 +260,10 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     color: '#fff',
+  },
+  scrollView:{
+    flexGrow:1,
+    backgroundColor:'#313338'
   },
   input: {
     borderWidth: 1,

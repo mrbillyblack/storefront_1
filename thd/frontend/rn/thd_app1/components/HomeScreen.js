@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Image, Text, TextInput, 
-  KeyboardAvoidingView, Button, StyleSheet, TouchableOpacity } from 'react-native';
+  KeyboardAvoidingView, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
 import { signIn, signInGuest, setGlobalState } from '../config/apiConfig';
 
@@ -100,6 +100,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     color: '#fff', // White text color
+  },
+  scrollView: {
+    flexGrow: 0,
+    backgroundColor: '#313338'
   },
   image: {
     width: '50%', // Adjust width as needed
