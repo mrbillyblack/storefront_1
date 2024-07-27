@@ -37,6 +37,7 @@ services:
     image: nginxinc/nginx-unprivileged:latest
     volumes:
       - ./backend/proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/rn/thd_app1/dist:/usr/share/nginx/html/static
     restart: always
     networks:
         net1:

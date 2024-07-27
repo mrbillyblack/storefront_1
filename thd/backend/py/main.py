@@ -77,16 +77,16 @@ class Order(BaseModel):
     
 
 # API endpoint to fetch inventory
-@app.get("/menu")
+@app.get("/api/menu")
 def get_menu():
     return fetch_menu_items()
 
-@app.get("/user")
+@app.get("/api/user")
 async def getUser(username: str):
     return get_user(username)
 
 # API endpoint to add item to cart
-@app.post("/cart/add")
+@app.post("/api/cart/add")
 async def add_to_cart(item: CartItem):
     # Validate item exists in inventory
     item_data = next((x for x in inventory if x["id"] == item.id), None)
@@ -104,25 +104,29 @@ async def add_to_cart(item: CartItem):
 #     # Typically, you would save order details to a database
 #     return {"message": "Order placed successfully"}
 
-@app.post('/placeOrder')
+@app.post('/api/placeOrder')
 def placeOrder(order: Order):
     return place_order(order)
 
-@app.post("/signup")
+@app.post("/api/signup")
 async def signup(user: User):
     return await sign_up(user)
 
-@app.post("/signin")
+@app.post("/api/signin")
 async def signin(user: User):
     return await sign_in(user)
 
-@app.post("/guest")
+@app.post("/api/guest")
 def signin_as_guest():
     return sign_in_as_guest()
 
-@app.post("/signout")
+@app.post("/api/signout")
 def signout():
     return sign_out()
+
+@app.get("/api")
+async def index():
+    return {'message' : 'connection successful'}
 
 
 if __name__ == "__main__":

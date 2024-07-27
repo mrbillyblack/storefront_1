@@ -69,8 +69,12 @@ const HomeScreen = ({ navigation }) => {
             secureTextEntry
             placeholderTextColor="#ccc" // Placeholder text color
           />
-          <Button title="Submit" onPress={handleSignIn} />
-          <Button title="Register" onPress={() => navigation.navigate('Register')} />
+          <View style={styles.buttonContainer}>
+            <Button title="Submit" onPress={handleSignIn} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Register" onPress={() => navigation.navigate('Register')} />
+          </View>
           <TouchableOpacity onPress={handleSignInGuest}>
             <Text style={styles.guestText}>continue as Guest</Text>
           </TouchableOpacity> 
@@ -121,6 +125,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
+  buttonContainer: {
+    marginBottom: 12,
+    marginTop: '8',
+  }
 });
 
 export default HomeScreen;

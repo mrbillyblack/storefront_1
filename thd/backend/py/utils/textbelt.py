@@ -9,7 +9,7 @@ load_dotenv()
 def sms(phone: str, message: str):
     try:
         resp = requests.post('https://textbelt.com/text', {
-        'phone': str(phone),
+        'phone': '+1' + str(phone),
         'message': str(message),
         'key': str(os.getenv('SMS_KEY')),
         })
@@ -21,7 +21,7 @@ def sms(phone: str, message: str):
 def dispatch_sms(message: str):
     try:
         resp = requests.post('https://textbelt.com/text', {
-        'phone': str(os.getenv('DISPATCH_PHONE')),
+        'phone': '+1' + str(os.getenv('DISPATCH_PHONE')),
         'message': str(message),
         'key': str(os.getenv('SMS_KEY')),
         })
