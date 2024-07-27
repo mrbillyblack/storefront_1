@@ -17,7 +17,7 @@ connection = mysql.connector.connect(
 
 def fetch_menu_items():
     cursor = connection.cursor()
-    cursor.execute("SELECT ItemID, ItemName, Price FROM menu")
+    cursor.execute("SELECT ItemID, ItemName, Price FROM menu WHERE OnMenu = 1")
     result = cursor.fetchall()
 
     menu = []
