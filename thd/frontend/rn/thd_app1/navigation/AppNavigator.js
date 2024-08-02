@@ -10,7 +10,6 @@ import { useGlobalState } from '../config/apiConfig';
 import Shop from '../components/Shop';
 import HomeScreen from '../components/HomeScreen';
 import OrderConfirm from '../components/OrderConfirm';
-import Info from '../components/Info'
 import Register from '../components/Register';
 import Checkout from '../components/Checkout';
 import Confirm from '../components/Confirm';

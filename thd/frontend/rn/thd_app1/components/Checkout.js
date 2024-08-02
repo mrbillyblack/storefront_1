@@ -263,6 +263,21 @@ const Checkout = ({ navigation }) => {
             )}
           </>
         )}
+          <>
+        <Text style={styles.text}>Select Pickup or Delivery:</Text>
+        <RadioButton.Group onValueChange={value => setPickup(value)} value={isPickup}>
+          <View style={styles.radioContainer}>
+            <View style={styles.radioItem}>
+              <RadioButton value="pickup" color={Platform.OS === 'web' ? "#b74b28" : "#fff"} />
+              <Text style={styles.text}>Pickup</Text>
+            </View>
+            <View style={styles.radioItem}>
+              <RadioButton value="delivery" color={Platform.OS === 'web' ? "#b74b28" : "#fff"} />
+              <Text style={styles.text}>Delivery</Text>
+            </View>
+          </View>
+        </RadioButton.Group>
+          </>
         <View style={styles.buttonContainer}>
         <Button title="Place Order" onPress={handleOrder} />
         </View>
