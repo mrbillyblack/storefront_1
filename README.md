@@ -1,6 +1,6 @@
-#React Native/Expo Storefront Application
+# React Native/Expo Storefront Application
 
-##How to install
+## How to install
 
 Required Environment Variables:
 ```
