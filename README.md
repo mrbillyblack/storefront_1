@@ -22,3 +22,9 @@ npm install
 ```
 
 Docker-compose file available. Run containers with ```docker-compose up -d``` and backend dependencies will install in container.
+
+The ```SMS_KEY``` value needs to be a TextBelt API key. You can get one after you purchase a number of texts: [https://textbelt.com/](url)
+
+
+
+
