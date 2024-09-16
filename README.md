@@ -25,6 +25,8 @@ Docker-compose file available. Run containers with ```docker-compose up -d``` an
 
 The ```SMS_KEY``` value needs to be a TextBelt API key. You can get one after you purchase a number of texts: [https://textbelt.com/](url)
 
+Authentication is handled by SupaBase: [https://supabase.com/](url)
+
 
 
 
