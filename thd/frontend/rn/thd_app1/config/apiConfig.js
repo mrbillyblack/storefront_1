@@ -2,7 +2,7 @@
 import { createGlobalState } from 'react-hooks-global-state';
 
 
-const API_URL = 'http://yourdomain.com/api';  // Replace with your actual FastAPI backend URL
+const API_URL = 'http://172.20.0.10:5000/api';  // Replace with your actual FastAPI backend URL
 
 
 const {setGlobalState, useGlobalState} = createGlobalState({

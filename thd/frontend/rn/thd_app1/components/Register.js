@@ -40,9 +40,11 @@ export default function Register({ navigation }) {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Sign Up</Text>
+        <>
         {showError && (
           <Text>Error: {errorMsg}</Text>
         )}
+        </>
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -73,19 +75,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#313338', // Dark background color
     padding: 16,
   },
   title: {
     fontSize: 24,
     marginBottom: 16,
     textAlign: 'center',
+    color: '#fff', // White text color
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    width: '100%',
+    borderColor: '#666', // Darker border color
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    color: '#fff', // White text color
   },
   scrollView: {
     flexGrow: 1,

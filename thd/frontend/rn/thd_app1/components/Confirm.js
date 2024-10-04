@@ -17,11 +17,6 @@ const Confirm = ({ navigation }) => {
 
     return( 
         <View style={styles.container}>
-            <Image
-                source={require('../assets/applogo.jpg')} // Replace with your image path
-                style={styles.image}
-                resizeMode="contain" // Adjust resizeMode as per your image requirements
-            />
             <Text style={{color: 'white'}}>You're logged in!</Text>
             <Text style={{color: 'white'}}>Use the tab navigator to go to the shop menu.</Text>
             <View style={styles.contactButtonContainer}>

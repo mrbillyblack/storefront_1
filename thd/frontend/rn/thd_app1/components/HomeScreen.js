@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, Image, Text, TextInput, 
-  KeyboardAvoidingView, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+  KeyboardAvoidingView, Button, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 
 import { signIn, signInGuest, setGlobalState } from '../config/apiConfig';
 
@@ -44,11 +44,6 @@ const HomeScreen = ({ navigation }) => {
 
   return (
       <View style={styles.container}>
-          <Image
-            source={require('../assets/applogo.jpg')} // Replace with your image path
-            style={styles.image}
-            resizeMode="contain" // Adjust resizeMode as per your image requirements
-          />
           <Text style={styles.title}>Sign In</Text>
           {showError && (
             <Text style={styles.errorText}>Error: {error}</Text>
@@ -69,14 +64,14 @@ const HomeScreen = ({ navigation }) => {
             secureTextEntry
             placeholderTextColor="#ccc" // Placeholder text color
           />
-          <View style={styles.buttonContainer}>
-            <Button title="Submit" onPress={handleSignIn} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Register" onPress={() => navigation.navigate('Register')} />
-          </View>
+          <Pressable style={styles.orangeButton} onPress={handleSignIn}>
+            <Text style={styles.text}>Log In</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.text}>Register</Text>
+          </Pressable>
           <TouchableOpacity onPress={handleSignInGuest}>
-            <Text style={styles.guestText}>continue as Guest</Text>
+            <Text style={styles.guestText}>..or continue as Guest</Text>
           </TouchableOpacity> 
       </View> 
   );
@@ -128,6 +123,32 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginBottom: 12,
     marginTop: '8',
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    marginBottom: 16,
+    elevation: 3,
+    backgroundColor: 'green',
+  },
+  orangeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#b74b28',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   }
 });
 

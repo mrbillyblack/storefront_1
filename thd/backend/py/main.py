@@ -86,16 +86,16 @@ async def getUser(username: str):
     return get_user(username)
 
 # API endpoint to add item to cart
-@app.post("/api/cart/add")
-async def add_to_cart(item: CartItem):
-    # Validate item exists in inventory
-    item_data = next((x for x in inventory if x["id"] == item.id), None)
-    if not item_data:
-        raise HTTPException(status_code=404, detail="Item not found")
+# @app.post("/api/cart/add")
+# async def add_to_cart(item: CartItem):
+#     # Validate item exists in inventory
+#     item_data = next((x for x in inventory if x["id"] == item.id), None)
+#     if not item_data:
+#         raise HTTPException(status_code=404, detail="Item not found")
 
-    # Add item to cart (simulated storage)
-    # Implement your actual cart management logic here
-    return {"message": f"Added {item.quantity} {item_data['name']} to cart"}
+#     # Add item to cart (simulated storage)
+#     # Implement your actual cart management logic here
+#     return {"message": f"Added {item.quantity} {item_data['name']} to cart"}
 
 # # API endpoint to place an order
 # @app.post("/order/place")
