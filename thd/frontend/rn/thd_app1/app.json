@@ -21,8 +21,17 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "scheme": "thdapp1",
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "name": "Herb & Bloom",
+      "shortName": "Herb & Bloom",
+      "themeColor": "#b74b28",
+      "backgroundColor": "#313338",
+      "display": "standalone",
+      "lang": "en",
+      "preferRelatedApplications": false
     },
     "plugins": [
       "expo-router"
@@ -33,7 +42,11 @@
       },
       "eas": {
         "projectId": "d5944023-4740-4278-8055-bc482b169099"
-      }
+      },
+      "googleExpoClientId": "REPLACE_WITH_YOUR_GOOGLE_EXPO_CLIENT_ID",
+      "googleWebClientId": "REPLACE_WITH_YOUR_GOOGLE_WEB_CLIENT_ID",
+      "googleIosClientId": "REPLACE_WITH_YOUR_GOOGLE_IOS_CLIENT_ID",
+      "googleAndroidClientId": "REPLACE_WITH_YOUR_GOOGLE_ANDROID_CLIENT_ID"
     },
     "owner": "shockersp"
   }

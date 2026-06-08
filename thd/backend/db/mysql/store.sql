@@ -14,10 +14,10 @@ CREATE TABLE menu(
 
 INSERT INTO menu (ItemName, Price, OnMenu)
 values
-    ('Lemon Haze', 30, True),
-    ('Black Cherry Gelato', 25, True),
-    ('Cereal Milk', 20, True),
-    ('Acapulco Gold', 20, True),
+    ('Lemon Verbena', 30, True),
+    ('Black Cherry Hibiscus', 25, True),
+    ('Chamomile Honey', 20, True),
+    ('Marigold Bloom', 20, True),
     ('$5 Special', 5, True);
 
 CREATE TABLE orders(
