@@ -70,6 +70,33 @@ const signIn = async (email, password) => {
 
   };
 
+  const signInWithGoogle = async (idToken, profile) => {
+    try {
+      const response = await fetch(`${API_URL}/google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken, profile }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      setGlobalState('username', profile?.name || profile?.email || 'Google User');
+      setGlobalState('isLoggedIn', true);
+
+      return data;
+    } catch (error) {
+      console.error('API Error (Google Sign In):', error);
+      throw error;
+    }
+  };
+
   const signInGuest = async () => {
     console.log()
     try {
@@ -183,9 +210,10 @@ export {
   getMenu,
   placeOrder,
   setGlobalState,
-  signUp,  
+  signUp,
   signIn,
   signInGuest,
+  signInWithGoogle,
   signOut,
   useGlobalState,
 };

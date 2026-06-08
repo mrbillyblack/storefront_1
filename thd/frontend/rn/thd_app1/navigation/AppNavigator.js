@@ -74,14 +74,15 @@ const AppTabs = () => (
         return <Ionicons name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: '#fff',
-      tabBarInactiveTintColor: '#212121',
+      tabBarInactiveTintColor: '#caa392',
       tabBarStyle: [
         {
           display: "flex",
           backgroundColor: '#b74b28',
-          tabBarLabelStyle: {
-            color: '#b74b28',
-          },
+          borderTopWidth: 0,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 6,
         },
         null
         ],
